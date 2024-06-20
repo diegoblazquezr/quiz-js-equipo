@@ -198,7 +198,7 @@ const onWindowChange = async () => {
 
     if (regex.test(pathname)) {
         pathnameModified = pathname.match(regex)[0];
-    //Hasta aqui y la } final del if
+        //Hasta aqui y la } final del if
 
         if (window.location.pathname === pathnameModified) {
             console.log('On questions page');
@@ -225,7 +225,7 @@ const onWindowChange = async () => {
     //Hay que quitar esto para desplegar en Pages
     if (regex2.test(pathname)) {
         pathnameModified = pathname.match(regex2)[0];
-    //Hasta aqui y la } final del if
+        //Hasta aqui y la } final del if
 
         if (window.location.pathname == pathnameModified) {
             console.log('Painting results...');
@@ -242,7 +242,7 @@ const decodeHTML = (html) => {
 };
 
 
-//Function to paint questions at pages/questions
+//Paint questions at pages/questions
 const paintQuestion = (object) => {
     //console.log('Painting question:', object);
     const questionCardContainer = document.querySelector('#questionCard');
@@ -289,7 +289,7 @@ const paintQuestion = (object) => {
     //console.log('Question painted successfully');
 };
 
-//Function to paint results, at pages/results
+//Paint results
 const paintResults = (number) => {
     const resultsSection = document.getElementById('results-container');
     const newResultsArticle = document.createElement('ARTICLE');
@@ -319,13 +319,6 @@ const paintResults = (number) => {
     newButtonBackArticle.append(newButtonBack);
     newResultsArticle.append(resultDIV, messageDIV);
     resultsSection.append(newResultsArticle, newButtonBackArticle);
-};
-
-
-//Function to paint Ranking at index.html
-const paintRanking = (obj) => {
-
-
 };
 
 //Function to show answers in almost random positions
@@ -656,7 +649,7 @@ const saveScore = (obj) => {
         console.log("No user is logged in to add their score.");
         alert("You need to be logged in to add score.");
     }
-};
+}
 // saveScore({score: 10, date: '07-02-1997'});
 
 function getRanking() {
@@ -708,10 +701,27 @@ function getRanking() {
             console.error("Error retrieving ranking:", error);
             throw new Error("Internal Server Error");
         });
-};
+}
+
+const getUserScores = () => {
+    isUserLogged = firebase.auth().currentUser;
+    console.log(isUserLogged);
+    if (isUserLogged) {
+        db.collection("users")
+            .doc(isUserLogged.uid)
+            .get()
+            .then((doc) => {
+                doc.scores.forEach(() => {
+                    console.log(doc.data().scores);
+                });
+            })
+            .catch(() => console.log('Error reading documents'));
+    }
+}
+getUserScores();
 
 // Function Calls
 generateFooter();
 onWindowChange();
-//startTimer();
-getRanking(); 
+//startTimer(); 
+getRanking();
